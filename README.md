@@ -19,7 +19,7 @@ cd servarr
 sudo nano docker-compose.yml
 ```
 
-5. Paste the text from this repository into your docker-compose.yml file and save.
+5. Paste [the text from this repository](https://github.com/chirimoyas/gluetun-arrs/blob/main/docker-compose.yml) into your docker-compose.yml file and save.
 6. Remaining in the same folder as you docker-compose file, type the following command:
 
 ```
