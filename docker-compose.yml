@@ -49,7 +49,7 @@ services:
     restart: unless-stopped
 ####  PROWLARR  ####
   prowlarr:
-    image: lscr.io/linuxserver/prowlarr:latest
+    image: ghcr.io/hotio/prowlarr:latest
     container_name: prowlarr
     environment:
       - PUID=[Your PUID]
