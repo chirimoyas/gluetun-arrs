@@ -1,0 +1,67 @@
+version: "3"
+services:
+####  GLUETUN  ####
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - VPN_SERVICE_PROVIDER=nordvpn
+      - VPN_TYPE=openvpn # or wireguard
+      - OPENVPN_USER=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      - SERVER_COUNTRIES=United States
+      - OBFUSCATED=enable
+    networks:
+      - name_of_your_network
+####  SONARR  ####
+  sonarr:
+    image: ghcr.io/hotio/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=[PUID, e.g. 1000] #This can be optained with the following command: id -u
+      - PGID=[PGID, e.g. 1000]
+      - TZ=[Your_timezone] #A list of timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones. You will need to choose the one under "TZ identifier"
+    volumes:
+      - /path/to/your/config/folder:/config
+      - /path/to/your/tv/files:/tv #optional
+      - /path/to/downloadclient-downloads:/downloads #optional  
+    depends_on:
+      - gluetun
+    network_mode: "container:gluetun"
+    restart: unless-stopped
+####  RADARR  ####
+  radarr:
+    image: ghcr.io/hotio/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=[your PUID]
+      - PGID=[your PGID]
+      - TZ=[Your_timezone]
+    volumes:
+      - /path/to/your/config/folder:/config
+      - /path/to/your/movie/files:/movies #optional
+      - /path/to/downloadclient-downloads:/downloads #optional  
+    depends_on:
+      - gluetun
+    network_mode: "container:gluetun"
+    restart: unless-stopped
+####  PROWLARR  ####
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=[Your PUID]
+      - PGID=[Your PGID]
+      - TZ=[Your_timezone]
+    volumes:
+      - /path/to/your/config/folder:/config
+    depends_on:
+      - gluetun
+    network_mode: "container:gluetun"
+    restart: unless-stopped
+
+networks:
+  name_of_your_network (from the Gluetun config above):
+    external: true
