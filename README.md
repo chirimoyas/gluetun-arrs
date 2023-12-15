@@ -4,7 +4,7 @@ Servarr apps routed through a VPN and accessible through Nginx Proxy Manager rev
 This is installed on a Linux instance running Ubuntu 22.04. The docker-compose should be transferable to other linux distros. [The guide that helped me a lot is here](https://wiki.servarr.com/).
 
 Here's how I went about doing this:
-###Setting up Docker
+###Setting up Docker###
 1. Be sure docker and docker-compose are installed on your system. Follow the directions here for installing docker: https://docs.docker.com/engine/install/ubuntu/. Follow the directions here for installing docker-compose: https://docs.docker.com/compose/install/
 
 ###Creating your Docker stack for Servarr apps
