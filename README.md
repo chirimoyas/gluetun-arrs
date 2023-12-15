@@ -20,16 +20,16 @@ sudo nano docker-compose.yml
 ```
 
 5. Paste [the text from this repository](https://github.com/chirimoyas/gluetun-arrs/blob/main/docker-compose.yml) into your docker-compose.yml file and save.
-6. Remaining in the same folder as you docker-compose file, type the following command:
+6. Remaining in the same folder as your docker-compose file, type the following command:
 
 ```
 docker-compose up -d
 ```
-After this your stack should be running, which you will be able to verify by inspecting any of the containers.
+After this your stack should be running, which you will be able to verify by inspecting any of the containers. For exmaple:
 ```
 docker inspect gluetun
 ```
-You can also confirm that the servarr apps are running on a vpn by execing into the container:
+You can also confirm that the servarr apps are running on a vpn by execing into the container and seeing that the IP given is not your host address:
 ```
 docker exec -it prowlarr curl ipinfo.io
 ```
