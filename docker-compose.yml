@@ -20,8 +20,8 @@ services:
     image: ghcr.io/hotio/sonarr:latest
     container_name: sonarr
     environment:
-      - PUID=[PUID, e.g. 1000] #This can be optained with the following command: id -u
-      - PGID=[PGID, e.g. 1000]
+      - PUID=${PUID} #This can be optained with the following command: id -u
+      - PGID=${PGID}
       - TZ=[Your_timezone] #A list of timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones. You will need to choose the one under "TZ identifier"
     volumes:
       - /path/to/your/config/folder:/config
