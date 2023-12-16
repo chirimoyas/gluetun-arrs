@@ -1,3 +1,10 @@
+###########################################################################################################
+## A note about folder mapping: Your download client (sabnzbd, nzbget, etc) should be mapped in Docker   ##
+## to the same path as your Servarr apps. If not,  files won't transfer properly after unpacking.        ##
+## (e.g.: download client mapping: /host/media/folder:/media;                                            ##  
+## Servarr app mapping: /host/servarr/folder:/media)                                                     ##
+###########################################################################################################
+
 version: "3"
 services:
 ####  GLUETUN  ####
@@ -15,7 +22,9 @@ services:
       - OBFUSCATED=enable
     networks:
       - name_of_your_network
-####  SONARR  ####
+      
+####  SONARR: Port 8989  ####
+
   sonarr:
     image: ghcr.io/hotio/sonarr:latest
     container_name: sonarr
@@ -25,13 +34,15 @@ services:
       - TZ=[Your_timezone] #A list of timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones. You will need to choose the one under "TZ identifier"
     volumes:
       - /path/to/your/config/folder:/config
-      - /path/to/your/tv/files:/tv #optional
-      - /path/to/downloadclient-downloads:/downloads #optional  
+      - /path/to/your/tv/files:/media/tv
+      - /path/to/downloadclient-downloads:/downloads  
     depends_on:
       - gluetun
     network_mode: "container:gluetun"
     restart: unless-stopped
-####  RADARR  ####
+    
+####  RADARR: Port 7878  ####
+
   radarr:
     image: ghcr.io/hotio/radarr:latest
     container_name: radarr
@@ -41,13 +52,33 @@ services:
       - TZ=[Your_timezone]
     volumes:
       - /path/to/your/config/folder:/config
-      - /path/to/your/movie/files:/movies #optional
-      - /path/to/downloadclient-downloads:/downloads #optional  
+      - /path/to/your/movie/files:/media/movies
+      - /path/to/downloadclient-downloads:/downloads
     depends_on:
       - gluetun
     network_mode: "container:gluetun"
     restart: unless-stopped
-####  PROWLARR  ####
+
+#### LIDARR: Port 8686 ####
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=[your PUID]
+      - PGID=[your PGID]
+      - TZ=[Your_timezone]
+    volumes:
+      - /path/to/your/config/folder:/config
+      - /path/to/your/music/files:/media/music #optional
+      - /path/to/downloadclient-downloads:/downloads #optional
+    depends_on:
+      - gluetun
+    network_mode: "container:gluetun"
+    restart: unless-stopped
+    
+####  PROWLARR: Port 9696  ####
+
   prowlarr:
     image: ghcr.io/hotio/prowlarr:latest
     container_name: prowlarr
@@ -60,6 +91,18 @@ services:
     depends_on:
       - gluetun
     network_mode: "container:gluetun"
+    restart: unless-stopped
+
+### REQUESTRR: Port 4545 ###
+
+  requestrr:
+    image: darkalfx/requestrr
+    container_name: requestrr
+    depends_on:
+      - gluetun
+    network_mode: "container:gluetun"
+    volumes:
+    - /path/to/config/folder:/root/config
     restart: unless-stopped
 
 networks:
