@@ -106,5 +106,5 @@ services:
     restart: unless-stopped
 
 networks:
-  name_of_your_network (from the Gluetun config above):
+  name_of_your_network ## from the Gluetun config above ##
     external: true
