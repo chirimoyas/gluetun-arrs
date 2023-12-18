@@ -29,9 +29,9 @@ services:
     image: ghcr.io/hotio/sonarr:latest
     container_name: sonarr
     environment:
-      - PUID=${PUID} #This can be optained with the following command: id -u
+      - PUID=${PUID} # This can be obtained with the following command: id -u
       - PGID=${PGID}
-      - TZ=[Your_timezone] #A list of timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones. You will need to choose the one under "TZ identifier"
+      - TZ=[Your_timezone] # A list of timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones. You will need to choose the one under "TZ identifier"
     volumes:
       - /path/to/your/config/folder:/config
       - /path/to/your/tv/files:/media/tv
